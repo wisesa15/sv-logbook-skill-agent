@@ -11,15 +11,18 @@ from playwright.async_api import async_playwright, Browser, BrowserContext
 from pathlib import Path
 import base64
 
-SESSION_FILE = Path.home() / ".sv_logbook" / "session.json"
+SESSION_DIR = Path.home() / ".sv_logbook"
+SESSION_FILE = SESSION_DIR / "session.enc"  # encrypted session
 
 
 
 class SessionManager:
     def __init__(self):
-        self.login_url = os.getenv("LOGIN_URL")
-        self.email = os.getenv("EMAIL")
-        self.password = os.getenv("PASS")
+        self.config = Config()
+        self.login_url = self.config.login_url
+        self.email = self.config.email
+        self.password = self.config.password
+        self.domain = self.config.domain
 
         self._token: Optional[str] = None
         self._refresh_token: Optional[str] = None
@@ -134,14 +137,14 @@ class SessionManager:
             {
                 "name": "access_token",
                 "value": encoded_access,
-                "domain": "new-timesheet.sharingvisionjakarta.com",  # change if needed
+                "domain": self.domain,
                 "path": "/",
                 "sameSite": "Lax",
             },
             {
                 "name": "refresh_token",
                 "value": encoded_refresh,
-                "domain": "new-timesheet.sharingvisionjakarta.com",
+                "domain": self.domain,
                 "path": "/",
                 "sameSite": "Lax",
             },
@@ -172,7 +175,11 @@ class SessionManager:
             return False
 
         try:
-            data = json.loads(SESSION_FILE.read_text())
+            # Read and decrypt
+            encrypted_data = SESSION_FILE.read_bytes()
+            decrypted_data = self.config.fernet.decrypt(encrypted_data)
+            data = json.loads(decrypted_data.decode())
+            
             token = data.get("token")
             refresh_token = data.get("refresh_token")
             user_id = data.get("user_id")
@@ -204,23 +211,26 @@ class SessionManager:
             print("Reused existing token")
             return True
 
-        except Exception:
+        except Exception as e:
+            print(f"Session load error: {e}")
             return False
 
 
     def _save_session_to_disk(self):
-        SESSION_FILE.parent.mkdir(parents=True, exist_ok=True)
-        SESSION_FILE.write_text(
-            json.dumps(
-                {
-                    "token": self._token,
-                    "refresh_token": self._refresh_token,
-                    "user_id": self._user_id,
-                    "exp": self._token_exp,
-                    "user_team": self._user_team,
-                }
-            )
+        SESSION_DIR.mkdir(parents=True, exist_ok=True)
+        
+        # Encrypt session data
+        session_data = json.dumps(
+            {
+                "token": self._token,
+                "refresh_token": self._refresh_token,
+                "user_id": self._user_id,
+                "exp": self._token_exp,
+                "user_team": self._user_team,
+            }
         )
+        encrypted_data = self.config.fernet.encrypt(session_data.encode())
+        SESSION_FILE.write_bytes(encrypted_data)
 
     def _token_expiring(self, buffer_seconds: int = 60) -> bool:
         if not self._token_exp:
