@@ -49,6 +49,7 @@ class SessionManager:
 
     async def get_browser_context(self) -> BrowserContext:
         await self._ensure_logged_in()
+        await self._init_browser_context()  # Lazy init only when needed
         return self._browser_context
 
     # -------------------------
@@ -63,13 +64,12 @@ class SessionManager:
 
             # 2️⃣ try disk reuse
             if self._load_session_from_disk():
-                await self._init_browser_context()
-                return
+                return  # Browser context init deferred to get_browser_context()
 
             # 3️⃣ full login
             await self._login_api()
             self._save_session_to_disk()
-            await self._init_browser_context()
+            # Browser context init deferred to get_browser_context()
 
     async def _login_api(self):
         print("Authenticating via API...")
@@ -125,7 +125,7 @@ class SessionManager:
             self._playwright = await async_playwright().start()
 
         if not self._browser:
-            self._browser = await self._playwright.chromium.launch(headless=False)
+            self._browser = await self._playwright.chromium.launch(headless=True)  # Headless for server
 
         # 1️⃣ try cookie-based hydration
         self._browser_context = await self._browser.new_context()
