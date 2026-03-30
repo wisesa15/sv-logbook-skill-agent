@@ -1,6 +1,6 @@
 ---
 name: sv-logbook
-description: Automation skill for managing Sharing Vision Jakarta logbooks, presences, and projects.
+description: Automation skill for managing Sharing Vision Jakarta logbooks (timesheets). Use when the user needs to fill logbooks, check timesheet entries, log work activities, manage projects, or search for tools/projects in SV Jakarta system. Triggers on phrases like "isi logbook", "fill timesheet", "log my work", "cek logbook", "SV Jakarta timesheet".
 ---
 
 # SV Logbook Skill
@@ -15,7 +15,19 @@ Use this skill when the user needs to:
 ## Prerequisites
 This skill authenticates to SV Jakarta timesheet service. Ensure `.env` is configured (see `.env.example`).
 
+## User Preferences
+
+**Important:** First read `/root/.openclaw/workspace/sv-logbook-skill-agent/references/user-preferences.md` if it exists. This file contains user-specific defaults for:
+- Default project/tool selection
+- Default work mode (WFH/WFO)
+- Typical activity descriptions
+
 ## Tools (via script)
+
+All scripts must be run from the project directory with the virtual environment:
+```bash
+cd /root/.openclaw/workspace/sv-logbook-skill-agent && .venv/bin/python -m scripts.<script_name>
+```
 
 ### Metadata
 
@@ -55,3 +67,4 @@ This skill authenticates to SV Jakarta timesheet service. Ensure `.env` is confi
 - Dates must be `YYYY-MM-DD`.
 - `current_team` and `user_id` are automatically handled by the session.
 - Session is encrypted and stored locally at `~/.sv_logbook/session.enc`.
+- All scripts require the `.venv` virtual environment in the project directory.
