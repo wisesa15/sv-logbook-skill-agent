@@ -17,17 +17,20 @@ This skill authenticates to SV Jakarta timesheet service. Ensure `.env` is confi
 
 ## User Preferences
 
-**Important:** First read `/root/.openclaw/workspace/sv-logbook-skill-agent/references/user-preferences.md` if it exists. This file contains user-specific defaults for:
+**Important:** First read `./references/user-preferences.md` if it exists. This file contains user-specific defaults for:
 - Default project/tool selection
 - Default work mode (WFH/WFO)
 - Typical activity descriptions
 
 ## Tools (via script)
 
-All scripts must be run from the project directory with the virtual environment:
+All scripts must be run from the skill directory with the virtual environment:
+
 ```bash
-cd /root/.openclaw/workspace/sv-logbook-skill-agent && .venv/bin/python -m scripts.<script_name>
+cd SKILL_DIR && .venv/bin/python -m scripts.<script_name>
 ```
+
+Where `SKILL_DIR` is the directory containing this SKILL.md file.
 
 ### Metadata
 
