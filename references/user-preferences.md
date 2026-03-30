@@ -1,66 +1,89 @@
 # User Preferences for SV Logbook
 
 This file contains user-specific defaults for filling logbooks.
-Edit this file to customize your defaults.
 
 ## Default Work Mode
-
-Default work mode when not specified:
-- `WFH` - Work From Home
-- `WFO` - Work From Office
-- `WFA` - Work From Anywhere
 
 ```
 default_work_mode: WFH
 ```
 
-## Default Project/Tool
+## Tools
 
-Project and tool IDs for quick reference. Use `get_metadata --search <name>` to find IDs.
+| Purpose | Tool Name | FID |
+|---------|-----------|-----|
+| Presentasi | Microsoft PowerPoint | `31862f8d-de8e-4c0f-9100-c886ddbb5b53` |
+| Scripting | CML | `6da08da7-3216-4952-a8df-4ff4e8331f10` |
+| Explore data | HUE | `62006261-2fc4-4652-9d55-bb5eac45b94b` |
+| Meeting | Microsoft Teams | `d22094d7-f0b6-4689-9246-d2acb8af663f` |
+| Scripting + Explore (Dataiku) | Dataiku | `4585fb7b-2150-4254-b83e-8f85ab81f4f8` |
 
-### Projects
+## Projects
 
 | Project Name | FID |
 |--------------|-----|
 | (add your commonly used projects here) | |
 
-### Tools
-
-| Tool Name | FID |
-|-----------|-----|
-| (add your commonly used tools here) | |
-
 ## Activity Templates
 
-Pre-defined activity descriptions for common tasks:
+### Presentasi
+- "Presentasi: [topic/description]"
 
-### Development
-- "Development: [task description]"
-- "Code review: [PR/component]"
-- "Bug fixing: [issue description]"
+### Scripting
+- "Scripting: [task description]"
+- "Scripting Dataiku: [task description]"
 
-### Meetings
-- "Team meeting: [topic]"
-- "Client call: [client name]"
+### Explore Data
+- "Explore data: [dataset/description]"
+- "Explore data Dataiku: [dataset/description]"
 
-### Research
-- "Research: [topic]"
-- "Learning: [course/material]"
+### Meeting
+- "Meeting: [topic/participants]"
 
-## Example Logbook Entry
+## Quick Reference JSON Examples
 
+### PowerPoint Entry
 ```json
 {
-  "date": "2026-03-30",
-  "project_fid": "your-project-fid",
-  "tool_fid": "your-tool-fid",
-  "work_mode": "WFH",
-  "activity": "Development: feature implementation",
-  "duration": 8
+  "tool_fid": "31862f8d-de8e-4c0f-9100-c886ddbb5b53",
+  "activity": "Presentasi: [description]"
+}
+```
+
+### CML Entry
+```json
+{
+  "tool_fid": "6da08da7-3216-4952-a8df-4ff4e8331f10",
+  "activity": "Scripting: [description]"
+}
+```
+
+### HUE Entry
+```json
+{
+  "tool_fid": "62006261-2fc4-4652-9d55-bb5eac45b94b",
+  "activity": "Explore data: [description]"
+}
+```
+
+### Microsoft Teams Entry
+```json
+{
+  "tool_fid": "d22094d7-f0b6-4689-9246-d2acb8af663f",
+  "activity": "Meeting: [description]"
+}
+```
+
+### Dataiku Entry
+```json
+{
+  "tool_fid": "4585fb7b-2150-4254-b83e-8f85ab81f4f8",
+  "activity": "Scripting Dataiku / Explore data: [description]"
 }
 ```
 
 ## Notes
 
-- FIDs (Friendly IDs) can be found using: `python -m scripts.get_metadata --type tools --search <name>`- Work modes: WFH, WFO, WFA, Workshop, Leave (Cuti), Leave (Sakit)
+- Work modes: WFH, WFO, WFA, Workshop, Leave (Cuti), Leave (Sakit)
 - Duration is in hours
+- Use `get_metadata --search <name>` to find more FIDs
