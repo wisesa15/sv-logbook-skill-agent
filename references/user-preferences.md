@@ -2,11 +2,31 @@
 
 This file contains user-specific defaults for filling logbooks.
 
-## Default Work Mode
+## Default Values
 
-```
-default_work_mode: WFH
-```
+| Field | Default | Notes |
+|-------|---------|-------|
+| Work Mode | `WFO` | Unless user specifies otherwise |
+| Progress | `1` | Use percentage (e.g., `50%`) if continuation of previous activity |
+| Next Activities | `-` | Unless user mentions upcoming activities |
+
+## Activity Description Rules
+
+**Transform user input into formal, clear sentences:**
+
+| User says | Formal activity |
+|-----------|-----------------|
+| "fix bug di dataiku" | "Bugfixing: memperbaiki bug pada Dataiku" |
+| "meeting sama tim" | "Meeting: koordinasi dengan tim" |
+| "presentasi ke klien" | "Presentasi: demo ke klien" |
+| "explore data hue" | "Eksplorasi data menggunakan HUE" |
+| "scripting cml" | "Scripting menggunakan CML" |
+
+**Guidelines:**
+- Use formal Bahasa Indonesia
+- Be specific and clear
+- Capitalize first letter
+- No abbreviations unless commonly known
 
 ## Tools
 
@@ -24,66 +44,30 @@ default_work_mode: WFH
 |--------------|-----|
 | (add your commonly used projects here) | |
 
-## Activity Templates
+## Quick Reference JSON Example
 
-### Presentasi
-- "Presentasi: [topic/description]"
-
-### Scripting
-- "Scripting: [task description]"
-- "Scripting Dataiku: [task description]"
-
-### Explore Data
-- "Explore data: [dataset/description]"
-- "Explore data Dataiku: [dataset/description]"
-
-### Meeting
-- "Meeting: [topic/participants]"
-
-## Quick Reference JSON Examples
-
-### PowerPoint Entry
 ```json
 {
-  "tool_fid": "31862f8d-de8e-4c0f-9100-c886ddbb5b53",
-  "activity": "Presentasi: [description]"
+  "date": "2026-03-30",
+  "project_fid": "<project-fid>",
+  "tool_fid": "<tool-fid>",
+  "work_mode": "WFO",
+  "progress": 1,
+  "activity": "Formal activity description here",
+  "next_activities": "-"
 }
 ```
 
-### CML Entry
-```json
-{
-  "tool_fid": "6da08da7-3216-4952-a8df-4ff4e8331f10",
-  "activity": "Scripting: [description]"
-}
-```
+## Work Modes
 
-### HUE Entry
-```json
-{
-  "tool_fid": "62006261-2fc4-4652-9d55-bb5eac45b94b",
-  "activity": "Explore data: [description]"
-}
-```
-
-### Microsoft Teams Entry
-```json
-{
-  "tool_fid": "d22094d7-f0b6-4689-9246-d2acb8af663f",
-  "activity": "Meeting: [description]"
-}
-```
-
-### Dataiku Entry
-```json
-{
-  "tool_fid": "4585fb7b-2150-4254-b83e-8f85ab81f4f8",
-  "activity": "Scripting Dataiku / Explore data: [description]"
-}
-```
+- `WFH` - Work From Home
+- `WFO` - Work From Office
+- `WFA` - Work From Anywhere
+- `Workshop`
+- `Leave (Cuti)`
+- `Leave (Sakit)`
 
 ## Notes
 
-- Work modes: WFH, WFO, WFA, Workshop, Leave (Cuti), Leave (Sakit)
 - Duration is in hours
-- Use `get_metadata --search <name>` to find more FIDs
+- Use `get_metadata --search <name>` to find FIDs for projects/tools not listed
