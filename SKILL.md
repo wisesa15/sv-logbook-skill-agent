@@ -48,8 +48,38 @@ Where `SKILL_DIR` is the directory containing this SKILL.md file.
 | `python -m scripts.list_logbook` | List all logbook entries (full JSON) |
 | `python -m scripts.list_dates --start YYYY-MM-DD --end YYYY-MM-DD` | List entries in date range |
 | `python -m scripts.list_dates --missing --exclude-weekends --exclude-holidays` | Find missing workdays |
-| `python -m scripts.add_logbook_batch` | Add multiple logbook entries (stdin JSON) |
+| `python -m scripts.add_logbook_batch` | Add logbook entries (stdin JSON **array**) |
 | `python -m scripts.edit_logbook` | Edit existing logbook entry (stdin JSON with `fid`) |
+
+**Input format for add_logbook_batch:**
+
+Input MUST be a JSON **array** (list), even for a single entry:
+```json
+[
+  {
+    "work_mode": "WFO",
+    "selected_date": "2026-03-30T00:00:00.000Z",
+    "project": "Project Name",
+    "detail": [
+      {
+        "activity": [
+          {
+            "value": "Activity description",
+            "progress": { "type": "Development", "value": 1, "percentage": 100 }
+          }
+        ],
+        "next_activity": [],
+        "usecase": { "name": "Use Case Name", "deadline": "2026-03-27T17:00:00.000Z" }
+      }
+    ],
+    "tools": []
+  }
+]
+```
+
+Required fields: `work_mode`, `selected_date`, `project`, `detail`, `tools`
+
+Auto-filled by script: `fid`, `user_id`, `current_team`, `created_at`, `updated_at`
 
 **Quick commands:**
 ```bash
