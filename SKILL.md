@@ -91,3 +91,13 @@ Where `SKILL_DIR` is the directory containing this SKILL.md file.
 - `current_team` and `user_id` are automatically handled by the session.
 - Session is encrypted and stored locally at `~/.sv_logbook/session.enc`.
 - All scripts require the `.venv` virtual environment in the project directory.
+
+## Setup (for AI Agents)
+
+This skill requires setup before use:
+1. Clone repository to workspace
+2. Create `.env` file with SV Jakarta credentials
+3. Run `python -m venv .venv && .venv/bin/pip install -r requirements.txt`
+4. Run `.venv/bin/playwright install chromium`
+
+See `README.md` for full setup instructions.
